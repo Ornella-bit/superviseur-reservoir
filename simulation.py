@@ -1,11 +1,19 @@
 import time
 
-niveau = 50.0          # niveau du réservoir en %
-consommation = 2.5     # le niveau baisse de 2,5 % par seconde
+niveau = 0.0               # le réservoir démarre vide
+debit_remplissage = 5.0    # +5 % par pas
+consommation = 2.5         # -2,5 % par pas
 
-while niveau > 0:
+print("--- Remplissage ---")
+while niveau < 100:
+    niveau = niveau + debit_remplissage
     print(f"Niveau du réservoir : {niveau:.1f} %")
-    niveau = niveau - consommation
-    time.sleep(1)      # attend 1 seconde
+    time.sleep(0.3)
 
-print("Réservoir vide !")
+print("--- Consommation ---")
+while niveau > 0:
+    niveau = niveau - consommation
+    print(f"Niveau du réservoir : {niveau:.1f} %")
+    time.sleep(0.3)
+
+print("Cycle terminé")
