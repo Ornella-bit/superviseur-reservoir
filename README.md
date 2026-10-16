@@ -1,5 +1,7 @@
 # Superviseur de réservoir simulé
 
+🎥 [Vidéo de démonstration (1 min)](https://youtu.be/vXL2uMT5b4c)
+
 Simulation d'un réservoir avec pompe, capteurs de niveau et de température, et alarmes. Les mesures sont enregistrées dans un fichier CSV puis tracées en graphiques.
 
 ![Graphiques de la simulation](graphiques.png)
@@ -24,4 +26,3 @@ La même logique tourne sur un ESP32 simulé avec MicroPython : un potentiomètr
 
 - Code : [`wokwi/main.py`](wokwi/main.py)
 - Simulation en ligne : https://wokwi.com/projects/478000083560633345
-- 
