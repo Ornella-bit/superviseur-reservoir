@@ -16,4 +16,12 @@ Simulation d'un réservoir avec pompe, capteurs de niveau et de température, et
 
 ## Outils
 Python, pandas, matplotlib, Git et GitHub.
-La partie ESP32 avec Wokwi sera ajoutée prochainement.
+
+## Version ESP32 (Wokwi)
+La même logique tourne sur un ESP32 simulé avec MicroPython : un potentiomètre simule le niveau, un capteur DHT22 mesure la température, une LED représente la pompe et un buzzer signale les alarmes.
+
+![Circuit Wokwi](wokwi_circuit.png)
+
+- Code : [`wokwi/main.py`](wokwi/main.py)
+- Simulation en ligne : https://wokwi.com/projects/478000083560633345
+- 
