@@ -1,58 +1,58 @@
 import time
+import random
 
-niveau = 50.0          # niveau du réservoir en %
-consommation = 2.5     # le niveau baisse de 2,5 % par seconde
+# --- Paramètres ---
+SEUIL_BAS = 30.0          # la pompe démarre en dessous
+SEUIL_HAUT = 80.0         # la pompe s'arrête au-dessus
+CONSOMMATION = 2.0        # perte de niveau par pas
+DEBIT_POMPE = 5.0         # gain de niveau par pas (pompe ON)
 
-while niveau > 0:
-    print(f"Niveau du réservoir : {niveau:.1f} %")
-    niveau = niveau - consommation
-    time.sleep(1)      # attend 1 seconde
+ALARME_NIVEAU_BAS = 15.0
+ALARME_NIVEAU_HAUT = 95.0
+ALARME_TEMPERATURE = 40.0
 
-print("Réservoir vide !")
-
-import time
-
-niveau = 0.0               # le réservoir démarre vide
-debit_remplissage = 5.0    # +5 % par pas
-consommation = 2.5         # -2,5 % par pas
-
-print("--- Remplissage ---")
-while niveau < 100:
-    niveau = niveau + debit_remplissage
-    print(f"Niveau du réservoir : {niveau:.1f} %")
-    time.sleep(0.3)
-
-print("--- Consommation ---")
-while niveau > 0:
-    niveau = niveau - consommation
-    print(f"Niveau du réservoir : {niveau:.1f} %")
-    time.sleep(0.3)
-
-print("Cycle terminé")
-
-import time
-
-SEUIL_BAS = 30.0      # la pompe démarre en dessous
-SEUIL_HAUT = 80.0     # la pompe s'arrête au-dessus
-CONSOMMATION = 2.0    # perte de niveau par pas (utilisation de l'eau)
-DEBIT_POMPE = 5.0     # gain de niveau par pas quand la pompe tourne
-
+# --- État initial ---
 niveau = 50.0
+temperature = 25.0
 pompe_active = False
 
-for pas in range(1, 61):
+for pas in range(1, 101):
+    niveau_precedent = niveau
+
     # 1. Décision : la pompe doit-elle tourner ?
     if niveau < SEUIL_BAS:
         pompe_active = True
     elif niveau > SEUIL_HAUT:
         pompe_active = False
 
-    # 2. Le niveau évolue
+    # 2. Le niveau évolue (limité entre 0 et 100 %)
     niveau = niveau - CONSOMMATION
     if pompe_active:
         niveau = niveau + DEBIT_POMPE
+    niveau = max(0.0, min(100.0, niveau))
 
-    # 3. Affichage
+    # 3. La température évolue (la pompe chauffe, sinon refroidissement)
+    if pompe_active:
+        temperature = temperature + 1.2
+    else:
+        temperature = temperature - 0.5
+    temperature = temperature + random.uniform(-0.2, 0.2)  # bruit du capteur
+    temperature = max(25.0, temperature)                   # pas sous 25 °C
+
+    # 4. Alarmes
+    alarmes = []
+    if niveau < ALARME_NIVEAU_BAS:
+        alarmes.append("NIVEAU BAS")
+    if niveau > ALARME_NIVEAU_HAUT:
+        alarmes.append("NIVEAU HAUT")
+    if temperature > ALARME_TEMPERATURE:
+        alarmes.append("TEMPERATURE HAUTE")
+    if pompe_active and niveau < niveau_precedent:
+        alarmes.append("POMPE INEFFICACE")
+
+    # 5. Affichage
     etat = "ON" if pompe_active else "OFF"
-    print(f"Pas {pas:2d} | Niveau : {niveau:5.1f} % | Pompe : {etat}")
+    texte_alarmes = ", ".join(alarmes) if alarmes else "-"
+    print(f"Pas {pas:3d} | Niveau : {niveau:5.1f} % | Temp : {temperature:4.1f} °C | Pompe : {etat:3} | Alarmes : {texte_alarmes}")
     time.sleep(0.2)
+    
