@@ -1,6 +1,6 @@
 # Superviseur de réservoir simulé
 
-🎥 [Vidéo de démonstration (1 min)](https://youtu.be/vXL2uMT5b4c)
+🎥 [Vidéo de démonstration (1 min 16 s)](https://youtu.be/vXL2uMT5b4c)
 
 Simulation d'un réservoir avec pompe, capteurs de niveau et de température, et alarmes. Les mesures sont enregistrées dans un fichier CSV puis tracées en graphiques.
 
