@@ -1,3 +1,4 @@
+import csv
 import random
 import time
 from dataclasses import dataclass
@@ -83,4 +84,23 @@ def simuler():
         time.sleep(0.2)
 
 if __name__ == "__main__":
-    simuler()
+    def simuler():
+        random.seed(42)  # pour reproduire le même comportement
+    reservoir = Reservoir()
+
+    with open("donnees.csv", "w", newline="", encoding="utf-8") as fichier:
+        ecrivain = csv.writer(fichier)
+        ecrivain.writerow(["pas", "niveau", "temperature", "pompe", "alarmes"])
+
+        for pas in range(1, 101):
+            alarmes = reservoir.update_state()
+            reservoir.afficher(pas, alarmes)
+            ecrivain.writerow([
+                pas,
+                round(reservoir.niveau, 1),
+                round(reservoir.temperature, 1),
+                1 if reservoir.pompe_active else 0,
+                "|".join(alarmes),
+            ])
+            time.sleep(0.2)
+
